@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import Terminal from './Terminal'
 import Mascot from './Mascot'
 
@@ -116,25 +116,20 @@ export default function Hero() {
           }}>
             // pumpfun profile
           </div>
-          <a
-            href="https://pump.fun/profile/Voidkyp6pRUKLcvZxoGcff7aW5Lz7CPdEQQKVdexWDM"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={pumped ? 'pumpfun-spark' : ''}
+          <div
+            className={pumped ? 'pumpfun-wrapper active' : 'pumpfun-wrapper'}
             onMouseEnter={() => setPumped(true)}
             onMouseLeave={() => setPumped(false)}
-            style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '1rem', letterSpacing: '2px',
-              color: '#ff2d78', textDecoration: 'none',
-              borderBottom: '2px solid #ff2d78',
-              paddingBottom: 4,
-              display: 'inline-block',
-              textShadow: '0 0 12px rgba(255,45,120,0.6)',
-            }}
           >
-            pump.fun/profile/Voidk…WDM ↗
-          </a>
+            <a
+              href="https://pump.fun/profile/Voidkyp6pRUKLcvZxoGcff7aW5Lz7CPdEQQKVdexWDM"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pumpfun-link"
+            >
+              pump.fun/profile/Voidk…WDM ↗
+            </a>
+          </div>
         </div>
       </div>
 
