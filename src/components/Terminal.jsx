@@ -32,7 +32,8 @@ export default function Terminal() {
   }, [])
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const el = bottomRef.current
+    if (el) el.parentElement.scrollTop = el.parentElement.scrollHeight
   }, [lines])
 
   return (
