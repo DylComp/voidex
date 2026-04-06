@@ -6,7 +6,7 @@ import Confess from './components/Confess'
 import Scanner from './components/Scanner'
 import Archetypes from './components/Archetypes'
 import Feed from './components/Feed'
-import History from './components/History'
+import About from './components/About'
 import Protocol from './components/Protocol'
 import Modules from './components/Modules'
 import Collective from './components/Collective'
@@ -30,7 +30,7 @@ function App() {
         <Scanner />
         <Archetypes />
         <Feed />
-        <History />
+        <About />
         <Protocol />
         <Modules />
         <Collective />
