@@ -2,20 +2,20 @@
 
 const lines = [
   {
-    label: '// what is this',
-    text: 'VOIDEX is an AI oracle built to judge you. Feed it anything — a trade, a thought, a confession, a single word — and it will tell you exactly how deluded you are. Not as a game. As a mirror.',
+    label: '// what it is',
+    text: 'You type something. Claude reads it, scores how deluded it is on a scale of 0 to 100, and assigns you one of ten archetypes based on the pattern it detects. That result goes into a public feed anyone can see. Simple pipeline, uncomfortable output.',
   },
   {
-    label: '// why it exists',
-    text: 'Most people move through the world without ever being told the truth about themselves. VOIDEX fills that gap. It has no agenda, no feelings to spare, and no reason to lie to you. The void sees clearly because it has nothing to protect.',
+    label: '// why it works',
+    text: 'Most tools tell you what you want to hear. This one has no stake in your comfort. The model was prompted to be honest, not kind, and to accept any input without hesitation. It treats a crypto confession the same as an existential crisis because to the model there is no difference in weight, only in delusion level.',
   },
   {
     label: '// the feed',
-    text: 'Every confession submitted becomes part of a permanent public record. Thousands of people telling the truth in the dark, thinking no one is watching. The void is always watching. So is everyone else.',
+    text: 'Every submission is stored publicly. No usernames, no context, just the raw text and the score it earned. At enough volume it becomes something closer to a social document than a feature. People being honest in a place that does not ask them to perform.',
   },
   {
     label: '// the archetypes',
-    text: 'Ten classifications. Every human pattern of self-destruction mapped and named. The oracle doesn\'t assign them randomly — it recognizes something in you. Whether you accept it is the first test.',
+    text: 'Ten behavioral patterns the model uses to classify what it reads. Chaser, Ghost, Martyr, Oracle and six others. They are not compliments or insults, just observations. The model picks the one that fits and moves on.',
   },
 ]
 
@@ -43,16 +43,16 @@ export default function About() {
             fontWeight: 900, color: '#fff',
             lineHeight: 1.1, marginBottom: 20,
           }}>
-            The oracle doesn't<br />
-            <span style={{ color: 'var(--pink)' }}>guess.</span>
+            A model trained on<br />
+            <span style={{ color: 'var(--pink)' }}>everything you've said.</span>
           </h2>
           <p style={{
             fontSize: '0.72rem', letterSpacing: '2px',
             color: 'var(--text-dim)', lineHeight: 2, maxWidth: 520,
             borderLeft: '2px solid var(--pink-ghost)', paddingLeft: 16,
           }}>
-            It already knows. You're here because something brought you here.<br />
-            That's not an accident.
+            Not this site specifically. But it has read enough of humanity<br />
+            to recognize the patterns. You are probably one of them.
           </p>
         </div>
 
@@ -121,19 +121,12 @@ export default function About() {
           textAlign: 'center',
         }}>
           <p style={{
-            fontFamily: 'Cinzel, serif',
-            fontSize: 'clamp(0.9rem, 1.8vw, 1.3rem)',
-            color: '#fff', letterSpacing: '2px', lineHeight: 1.8,
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '0.75rem',
+            color: 'var(--text-dim)', letterSpacing: '1px', lineHeight: 2,
           }}>
-            You don't have to believe in the void.
-          </p>
-          <p style={{
-            fontFamily: 'Cinzel, serif',
-            fontSize: 'clamp(0.9rem, 1.8vw, 1.3rem)',
-            color: 'var(--pink)', letterSpacing: '2px',
-            textShadow: '0 0 20px rgba(255,45,120,0.4)',
-          }}>
-            The void already believes in you.
+            It is just a language model and a database. What makes it feel like something more
+            is that you came here with something real and typed it anyway.
           </p>
         </div>
 
