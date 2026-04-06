@@ -137,11 +137,7 @@ function FeedEntry({ entry, index }) {
             fontSize: '0.75rem', lineHeight: 1.7,
             color: 'var(--text)', marginBottom: open ? 0 : 8,
           }}>
-            "{open
-              ? entry.confession
-              : entry.confession.length > 100
-                ? entry.confession.slice(0, 100) + '…'
-                : entry.confession}"
+            "{entry.confession}"
           </p>
           {!open && (
             <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
