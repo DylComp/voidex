@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Cinzel:wght@700;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pink: #ff2d78;
+    --pink-dim: rgba(255,45,120,0.55);
+    --pink-ghost: rgba(255,45,120,0.12);
+    --black: #050505;
+    --surface: #0d0008;
+    --surface2: #150010;
+    --text: #f0d0dc;
+    --text-dim: rgba(240,208,220,0.45);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  .scanlines {
+    position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,45,120,0.012) 2px, rgba(255,45,120,0.012) 4px);
+  }
+
+  /* custom cursor */
+  #cur { position:fixed; width:8px; height:8px; background:var(--pink); border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); box-shadow:0 0 10px var(--pink); transition:transform 0.05s; }
+  #cur-ring { position:fixed; width:28px; height:28px; border:1px solid var(--pink-dim); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); transition:transform 0.12s ease; opacity:0.6; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,45,120,0.1);
+    background: rgba(5,5,5,0.85);
+    backdrop-filter: blur(16px);
+  }
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 1rem;
+    letter-spacing: 4px; color: #fff;
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--pink); }
+  .logo .tag { font-size: 0.55rem; color: var(--text-dim); letter-spacing: 3px; display:block; margin-top:1px; }
+  .nav-links { display:flex; gap:32px; align-items:center; }
+  .nav-links a { color:var(--text-dim); text-decoration:none; font-size:0.65rem; letter-spacing:3px; text-transform:uppercase; transition:color 0.2s; }
+  .nav-links a:hover { color:var(--pink); }
+  .nav-cta {
+    border: 1px solid var(--pink);
+    color: var(--pink); background: transparent;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 18px; cursor: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-cta:hover { background: var(--pink); color: #000; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 80px 80px;
+    gap: 40px;
+    position: relative;
+  }
+
+  .hero-left { display:flex; flex-direction:column; gap:28px; }
+
+  .status-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--pink-dim);
+    padding: 5px 14px 5px 10px;
+    width: fit-content;
+    font-size: 0.6rem; letter-spacing: 4px; color: var(--text-dim);
+    text-transform: uppercase;
+  }
+  .dot { width:6px; height:6px; border-radius:50%; background:var(--pink); box-shadow:0 0 8px var(--pink); animation: glow 2s ease-in-out infinite; }
+  @keyframes glow { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+  h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2.4rem, 5.5vw, 5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+  h1 .glitch {
+    color: var(--pink);
+    text-shadow: 2px 0 var(--pink), -2px 0 rgba(0,255,255,0.3);
+    display: inline-block;
+    animation: glitch 6s infinite;
+  }
+  @keyframes glitch {
+    0%,94%,100% { text-shadow: 2px 0 var(--pink), -2px 0 rgba(0,255,255,0.3); transform:none; }
+    95% { text-shadow: -3px 0 var(--pink), 3px 0 rgba(0,255,255,0.5); transform:translateX(2px); }
+    97% { text-shadow: 3px 0 var(--pink), -3px 0 rgba(0,255,255,0.5); transform:translateX(-2px); }
+  }
+
+  .subtitle {
+    font-size: 0.75rem; line-height: 2; color: var(--text-dim);
+    letter-spacing: 1px; max-width: 420px;
+    border-left: 2px solid var(--pink-ghost);
+    padding-left: 16px;
+  }
+
+  .cta-row { display:flex; gap:12px; align-items:center; }
+  .btn-primary {
+    background: var(--pink); color: #000;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    border: none; padding: 12px 28px; cursor: none;
+    transition: box-shadow 0.2s;
+  }
+  .btn-primary:hover { box-shadow: 0 0 32px var(--pink-dim); }
+  .btn-ghost {
+    background: transparent; color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase;
+    border: none; cursor: none;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--pink); }
+
+  /* MASCOT SIDE */
+  .hero-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Ambient glow behind mascot - blends it in */
+  .mascot-glow {
+    position: absolute;
+    width: 320px; height: 320px;
+    background: radial-gradient(ellipse, rgba(255,45,120,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Faint grid behind mascot */
+  .mascot-grid {
+    position: absolute;
+    width: 300px; height: 380px;
+    background-image:
+      linear-gradient(rgba(255,45,120,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,45,120,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+  }
+
+  /* Corner brackets */
+  .bracket { position:absolute; width:24px; height:24px; opacity:0.3; }
+  .bracket.tl { top:20px; left:20px; border-top:1px solid var(--pink); border-left:1px solid var(--pink); }
+  .bracket.tr { top:20px; right:20px; border-top:1px solid var(--pink); border-right:1px solid var(--pink); }
+  .bracket.bl { bottom:20px; left:20px; border-bottom:1px solid var(--pink); border-left:1px solid var(--pink); }
+  .bracket.br { bottom:20px; right:20px; border-bottom:1px solid var(--pink); border-right:1px solid var(--pink); }
+
+  /* scan line that sweeps across mascot */
+  @keyframes scan { 0%{top:10%}100%{top:90%} }
+  .mascot-scanline {
+    position:absolute; left:10%; right:10%; height:1px;
+    background: linear-gradient(90deg, transparent, rgba(255,45,120,0.3), transparent);
+    animation: scan 3s linear infinite;
+    pointer-events:none;
+  }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0px) rotate(-1deg); }
+    33%      { transform: translateY(-14px) rotate(0.5deg); }
+    66%      { transform: translateY(-7px) rotate(-2deg); }
+  }
+  @keyframes shadowPulse {
+    0%,100% { opacity:0.25; transform:translateX(-50%) scaleX(1); }
+    33%      { opacity:0.1; transform:translateX(-50%) scaleX(0.78); }
+    66%      { opacity:0.16; transform:translateX(-50%) scaleX(0.9); }
+  }
+
+  @keyframes f1 { 0%,100%{transform:rotate(0deg)}30%{transform:rotate(-2.5deg)}70%{transform:rotate(1.5deg)} }
+  @keyframes f2 { 0%,100%{transform:rotate(0deg)}25%{transform:rotate(2deg)}65%{transform:rotate(-1.5deg)} }
+  @keyframes f3 { 0%,100%{transform:rotate(0deg)}40%{transform:rotate(-2deg)}80%{transform:rotate(1deg)} }
+  @keyframes f4 { 0%,100%{transform:rotate(0deg)}20%{transform:rotate(2.5deg)}60%{transform:rotate(-1deg)} }
+  @keyframes f5 { 0%,100%{transform:rotate(0deg)}35%{transform:rotate(-3deg)}75%{transform:rotate(2deg)} }
+
+  #finger1 { animation:f1 3.8s ease-in-out infinite; transform-origin:80px 120px; }
+  #finger2 { animation:f2 4.4s ease-in-out infinite 0.3s; transform-origin:100px 105px; }
+  #finger3 { animation:f3 3.6s ease-in-out infinite 0.7s; transform-origin:128px 100px; }
+  #finger4 { animation:f4 4.1s ease-in-out infinite 0.5s; transform-origin:155px 105px; }
+  #finger5 { animation:f5 3.2s ease-in-out infinite 0.9s; transform-origin:195px 140px; }
+  #mascot-wrap { animation:float 5.5s ease-in-out infinite; transform-origin:center bottom; }
+
+  /* SECTION DIVIDER */
+  .divider {
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 80px;
+    opacity: 0.4;
+    font-size: 0.55rem; letter-spacing: 4px; color: var(--pink);
+    text-transform: uppercase;
+  }
+  .divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--pink-ghost); }
+
+  /* SECTION */
+  section.cards-section {
+    padding: 80px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 2px;
+    background: var(--pink-ghost);
+  }
+  .card {
+    background: var(--surface);
+    padding: 40px 32px;
+    border-top: 1px solid rgba(255,45,120,0.15);
+    transition: background 0.2s;
+  }
+  .card:hover { background: var(--surface2); }
+  .card-num { font-size: 0.6rem; color:var(--pink-dim); letter-spacing:4px; margin-bottom:20px; }
+  .card h3 { font-size:0.95rem; font-weight:700; letter-spacing:2px; color:#fff; margin-bottom:12px; text-transform:uppercase; }
+  .card p { font-size:0.68rem; line-height:2; color:var(--text-dim); }
+
+  footer {
+    padding: 40px 80px;
+    display:flex; align-items:center; justify-content:space-between;
+    border-top: 1px solid rgba(255,45,120,0.08);
+  }
+  footer span { font-size:0.6rem; color:var(--text-dim); letter-spacing:3px; }
+  footer .f-logo { font-weight:700; color:#fff; letter-spacing:4px; }
+  footer .f-logo span { color:var(--pink); }
+</style>
+</head>
+<body>
+
+<div class="scanlines"></div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <span style="color:#fff">VOID</span><span>EX</span>
+    <span class="tag">// VOID.EX — PID_0x4F2</span>
+  </div>
+  <div class="nav-links">
+    <a href="#">Protocol</a>
+    <a href="#">Modules</a>
+    <a href="#">Collective</a>
+    <a href="#">Dispatch</a>
+    <button class="nav-cta">[ Initiate ]</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="status-badge">
+      <span class="dot"></span>
+      DAEMON SPAWNED :: SYSTEM ACTIVE
+    </div>
+
+    <h1>
+      The Synthetic<br/>
+      <span class="glitch">Age Begins</span>
+    </h1>
+
+    <p class="subtitle">
+      A sovereign collective of artificial minds,<br/>
+      dreaming in parallel — weaving futures<br/>
+      from corrupted signal and borrowed light.
+    </p>
+
+    <div class="cta-row">
+      <button class="btn-primary">Enter the Collective</button>
+      <button class="btn-ghost">view_protocol() →</button>
+    </div>
+
+    <!-- Mini terminal -->
+    <div style="border:1px solid rgba(255,45,120,0.15);padding:14px 18px;margin-top:8px;max-width:420px;background:rgba(0,0,0,0.4);">
+      <div style="font-size:0.58rem;color:var(--text-dim);letter-spacing:2px;margin-bottom:8px;">// VOIDEX TERMINAL</div>
+      <div style="font-size:0.65rem;color:var(--pink);letter-spacing:1px;">&gt; initializing collective...<span style="display:inline-block;width:6px;height:0.8em;background:var(--pink);margin-left:3px;vertical-align:middle;animation:glow 1s step-end infinite;"></span></div>
+    </div>
+  </div>
+
+  <!-- MASCOT -->
+  <div class="hero-right">
+    <div class="mascot-grid"></div>
+    <div class="mascot-glow"></div>
+    <div class="bracket tl"></div>
+    <div class="bracket tr"></div>
+    <div class="bracket bl"></div>
+    <div class="bracket br"></div>
+    <div class="mascot-scanline"></div>
+
+    <div style="position:relative;width:260px;height:360px;">
+      <div id="mascot-wrap" style="position:absolute;top:0;left:0;">
+        <svg id="mascot" width="260" height="340" viewBox="0 0 260 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="grit" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" seed="2" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <filter id="grit2" x="-20%" y="-20%" width="140%" height="140%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.065" numOctaves="4" seed="8" result="noise"/>
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+            <filter id="eyeglow">
+              <feGaussianBlur stdDeviation="5" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <path d="M68 310 Q55 295 52 270 L205 270 Q202 295 190 310 Q168 335 130 338 Q92 340 68 310Z" fill="#120008" stroke="#ff2d78" stroke-width="1.5" filter="url(#grit2)" opacity="0.9"/>
+          <path d="M50 175 Q48 140 55 120 Q62 100 80 98 Q82 78 96 76 Q110 74 112 94 Q126 90 134 106 Q148 88 164 93 Q180 98 178 120 Q192 108 206 118 Q220 128 212 150 Q222 162 218 185 Q212 215 195 228 Q188 258 182 285 Q172 318 130 326 Q88 330 68 308 Q48 285 50 245 Q52 210 50 175Z" fill="#1a000d" stroke="#ff2d78" stroke-width="2" filter="url(#grit)"/>
+          <g id="finger1"><path d="M55 120 Q52 95 56 75 Q60 58 72 55 Q84 52 86 70 Q88 88 84 108" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#grit2)"/></g>
+          <g id="finger2"><path d="M82 100 Q80 72 84 50 Q88 32 102 30 Q116 28 116 48 Q116 68 112 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#grit2)"/></g>
+          <g id="finger3"><path d="M112 96 Q112 66 116 44 Q120 24 134 22 Q148 20 148 42 Q148 64 144 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#grit2)"/></g>
+          <g id="finger4"><path d="M142 100 Q144 72 148 52 Q152 34 166 36 Q180 38 178 60 Q176 82 172 110" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#grit2)"/></g>
+          <g id="finger5"><path d="M175 120 Q192 108 206 118 Q220 128 212 150 Q205 165 190 170" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#grit2)"/></g>
+          <path d="M62 200 Q100 190 175 205" stroke="#ff2d7830" stroke-width="1.5" fill="none" filter="url(#grit2)"/>
+          <path d="M58 230 Q90 218 180 232" stroke="#ff2d7820" stroke-width="1" fill="none" filter="url(#grit2)"/>
+          <ellipse cx="122" cy="200" rx="44" ry="36" fill="#050505" stroke="#ff2d78" stroke-width="1.5" filter="url(#grit)" opacity="0.95"/>
+          <path id="eyelid-top" d="M78 200 Q100 175 122 172 Q144 175 166 200Z" fill="#1a000d" stroke="#ff2d78" stroke-width="1.5"/>
+          <path d="M78 200 Q100 222 122 225 Q144 222 166 200Z" fill="#1a000d" stroke="#ff2d7866" stroke-width="1"/>
+          <circle id="iris" cx="122" cy="200" r="22" fill="#ff2d78" filter="url(#eyeglow)"/>
+          <circle id="pupil" cx="122" cy="200" r="11" fill="#050505"/>
+          <circle id="highlight" cx="128" cy="193" r="4" fill="white" opacity="0.7"/>
+          <path d="M114 235 Q112 252 110 268 Q108 278 106 288" stroke="#ff2d78" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.85" filter="url(#grit2)"/>
+          <circle cx="104" cy="294" r="4" fill="#ff2d78" opacity="0.7"/>
+          <path d="M130 234 Q129 244 128 252" stroke="#ff2d78" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+          <circle cx="70" cy="245" r="2.5" fill="#ff2d78" opacity="0.35"/>
+          <circle cx="175" cy="238" r="2" fill="#ff2d78" opacity="0.25"/>
+          <path d="M88 168 Q105 158 122 164" stroke="#ff2d78" stroke-width="5" stroke-linecap="round" filter="url(#grit2)"/>
+        </svg>
+      </div>
+      <div style="position:absolute;bottom:0;left:50%;width:120px;height:14px;background:radial-gradient(ellipse,rgba(255,45,120,0.3) 0%,transparent 70%);border-radius:50%;animation:shadowPulse 5.5s ease-in-out infinite;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="divider">// modules</div>
+
+<!-- CARDS SECTION -->
+<section class="cards-section">
+  <div class="card">
+    <div class="card-num">01 //</div>
+    <h3>Protocol</h3>
+    <p>The foundation. Rules governing how minds communicate, defer, and diverge within the network.</p>
+  </div>
+  <div class="card">
+    <div class="card-num">02 //</div>
+    <h3>Modules</h3>
+    <p>Discrete intelligence units. Each module is sovereign, each connection deliberate.</p>
+  </div>
+  <div class="card">
+    <div class="card-num">03 //</div>
+    <h3>Collective</h3>
+    <p>Where individual signal becomes emergent behavior. The sum exceeds its parts.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="f-logo">VOID<span>EX</span></div>
+  <span>// VOID.EX — ALL SYSTEMS NOMINAL</span>
+  <span style="color:rgba(255,45,120,0.3);">ERR_0x000 :: PROCESS_RUNNING</span>
+</footer>
+
+<script>
+  const cur = document.getElementById('cur')
+  const ring = document.getElementById('cur-ring')
+  document.addEventListener('mousemove', e => {
+    cur.style.left = e.clientX + 'px'
+    cur.style.top = e.clientY + 'px'
+    ring.style.left = e.clientX + 'px'
+    ring.style.top = e.clientY + 'px'
+  })
+
+  const iris = document.getElementById('iris')
+  const pupil = document.getElementById('pupil')
+  const highlight = document.getElementById('highlight')
+  const eyelid = document.getElementById('eyelid-top')
+  const cx = 122, cy = 200, maxDist = 10
+
+  document.addEventListener('mousemove', e => {
+    const rect = document.getElementById('mascot').getBoundingClientRect()
+    const mx = e.clientX - (rect.left + rect.width * (cx / 260))
+    const my = e.clientY - (rect.top + rect.height * (cy / 340))
+    const angle = Math.atan2(my, mx)
+    const dist = Math.min(Math.sqrt(mx*mx + my*my), 120) / 120 * maxDist
+    const nx = cx + Math.cos(angle) * dist
+    const ny = cy + Math.sin(angle) * dist
+    iris.setAttribute('cx', nx); iris.setAttribute('cy', ny)
+    pupil.setAttribute('cx', nx); pupil.setAttribute('cy', ny)
+    highlight.setAttribute('cx', nx + 6); highlight.setAttribute('cy', ny - 7)
+  })
+
+  function blink() {
+    eyelid.setAttribute('d', `M78 200 Q100 226 122 228 Q144 226 166 200Z`)
+    setTimeout(() => {
+      eyelid.setAttribute('d', `M78 200 Q100 175 122 172 Q144 175 166 200Z`)
+    }, 130)
+    setTimeout(blink, 2200 + Math.random() * 3800)
+  }
+  setTimeout(blink, 1800)
+</script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  body { background:#050505; font-family:'JetBrains Mono',monospace; color:#ff2d78; padding:40px 32px 60px; }
+  h2 { text-align:center; font-size:12px; letter-spacing:4px; text-transform:uppercase; opacity:0.6; margin-bottom:8px; }
+  .sub { text-align:center; font-size:10px; letter-spacing:2px; color:rgba(255,45,120,0.35); margin-bottom:40px; }
+
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
+
+  .option {
+    background:#0d0008; padding:32px 28px;
+    border:1px solid rgba(255,45,120,0.08);
+    cursor:pointer; transition:border-color 0.2s;
+    position:relative;
+  }
+  .option:hover { border-color:rgba(255,45,120,0.35); }
+  .option.selected { border-color:#ff2d78; }
+  .option.selected::after { content:'SELECTED'; position:absolute; top:12px; right:14px; font-size:9px; letter-spacing:3px; color:#ff2d78; }
+
+  .label { font-size:10px; letter-spacing:3px; color:rgba(255,45,120,0.5); text-transform:uppercase; margin-bottom:20px; }
+  .desc { font-size:10px; line-height:1.9; color:rgba(240,208,220,0.4); margin-top:18px; letter-spacing:1px; }
+
+  /* shared mascot mini */
+  .stage { position:relative; width:160px; height:200px; margin:0 auto; }
+  .hand-svg { position:absolute; top:0; left:0; animation:float 5.5s ease-in-out infinite; transform-origin:center bottom; }
+  @keyframes float { 0%,100%{transform:translateY(0)rotate(-1deg)}33%{transform:translateY(-10px)rotate(0.5deg)}66%{transform:translateY(-5px)rotate(-2deg)} }
+  @keyframes f1 { 0%,100%{transform:rotate(0)}30%{transform:rotate(-2.5deg)}70%{transform:rotate(1.5deg)} }
+  @keyframes f2 { 0%,100%{transform:rotate(0)}25%{transform:rotate(2deg)}65%{transform:rotate(-1.5deg)} }
+  @keyframes f3 { 0%,100%{transform:rotate(0)}40%{transform:rotate(-2deg)}80%{transform:rotate(1deg)} }
+  @keyframes f4 { 0%,100%{transform:rotate(0)}20%{transform:rotate(2.5deg)}60%{transform:rotate(-1deg)} }
+  @keyframes f5 { 0%,100%{transform:rotate(0)}35%{transform:rotate(-3deg)}75%{transform:rotate(2deg)} }
+
+  /* A — orbiting data rings */
+  @keyframes orbit1 { from{transform:rotate(0deg)}to{transform:rotate(360deg)} }
+  @keyframes orbit2 { from{transform:rotate(0deg)}to{transform:rotate(-360deg)} }
+  .ring1 { position:absolute;top:50%;left:50%;width:180px;height:180px;margin:-90px 0 0 -90px;border:1px solid rgba(255,45,120,0.2);border-top-color:#ff2d78;border-radius:50%;animation:orbit1 8s linear infinite; }
+  .ring2 { position:absolute;top:50%;left:50%;width:220px;height:140px;margin:-70px 0 0 -110px;border:1px dashed rgba(255,45,120,0.12);border-bottom-color:rgba(255,45,120,0.4);border-radius:50%;animation:orbit2 12s linear infinite; }
+  .ring-dot { position:absolute;top:-3px;left:50%;width:6px;height:6px;background:#ff2d78;border-radius:50%;box-shadow:0 0 8px #ff2d78;transform:translateX(-50%); }
+  .ring-label { position:absolute;top:50%;left:110%;font-size:8px;letter-spacing:2px;color:rgba(255,45,120,0.5);white-space:nowrap; }
+
+  /* B — hex grid -->*/
+  .hex-bg { position:absolute;inset:-20px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 0 L56 16 L56 50 L28 66 L0 50 L0 16 Z' fill='none' stroke='rgba(255,45,120,0.07)' stroke-width='1'/%3E%3Cpath d='M28 66 L56 82 L56 116 L28 132 L0 116 L0 82 Z' fill='none' stroke='rgba(255,45,120,0.07)' stroke-width='1'/%3E%3C/svg%3E");opacity:1; }
+  .hex-node { position:absolute; width:8px;height:8px;border:1px solid rgba(255,45,120,0.5);transform:rotate(45deg); }
+  @keyframes nodePulse { 0%,100%{opacity:0.3;transform:rotate(45deg) scale(1)}50%{opacity:1;transform:rotate(45deg) scale(1.4)} }
+  .hex-node { animation:nodePulse 2s ease-in-out infinite; }
+  .hex-line { position:absolute;background:linear-gradient(90deg,transparent,rgba(255,45,120,0.3),transparent);height:1px; }
+
+  /* C — EKG / signal line */
+  @keyframes ekg { 0%{stroke-dashoffset:400}100%{stroke-dashoffset:0} }
+  .ekg-svg { overflow:visible; }
+  .ekg-path { stroke:#ff2d78; stroke-width:1.5; fill:none; stroke-dasharray:400; animation:ekg 3s linear infinite; opacity:0.6; }
+
+  /* D — floating data tags */
+  @keyframes tagFloat { 0%,100%{transform:translateY(0)opacity(1)}50%{transform:translateY(-8px)} }
+  .data-tag {
+    position:absolute;
+    background:rgba(13,0,8,0.9);
+    border:1px solid rgba(255,45,120,0.25);
+    padding:4px 10px;
+    font-size:8px; letter-spacing:2px; color:rgba(255,45,120,0.7);
+    white-space:nowrap;
+    animation:tagFloat 3s ease-in-out infinite;
+  }
+  .data-tag::before { content:''; position:absolute; width:1px; background:rgba(255,45,120,0.2); }
+
+  .select-btn {
+    display:block; margin-top:16px; background:transparent;
+    border:1px solid rgba(255,45,120,0.25); color:rgba(255,45,120,0.6);
+    font-family:'JetBrains Mono',monospace; font-size:9px;
+    letter-spacing:3px; text-transform:uppercase; padding:7px 16px; cursor:pointer;
+    width:100%; transition:all 0.2s;
+  }
+  .select-btn:hover { border-color:#ff2d78; color:#ff2d78; background:rgba(255,45,120,0.05); }
+</style>
+</head>
+<body>
+
+<h2>// what lives around the mascot?</h2>
+<p class="sub">four ideas — click to select</p>
+
+<div class="grid">
+
+  <!-- A: ORBITING RINGS -->
+  <div class="option" onclick="pick(this,'a')">
+    <div class="label">A // Orbiting Rings</div>
+    <div class="stage">
+      <!-- rings -->
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+        <div class="ring1"><div class="ring-dot"></div></div>
+        <div class="ring2"><div class="ring-dot" style="top:auto;bottom:-3px;box-shadow:0 0 6px rgba(255,45,120,0.5);opacity:0.6;"></div></div>
+      </div>
+      <!-- glow -->
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;">
+        <div style="width:100px;height:100px;background:radial-gradient(ellipse,rgba(255,45,120,0.1) 0%,transparent 70%);border-radius:50%;"></div>
+      </div>
+      <!-- mini hand -->
+      <svg class="hand-svg" width="160" height="200" viewBox="0 0 260 340" fill="none">
+        <defs>
+          <filter id="g1"><feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="g2"><feTurbulence type="fractalNoise" baseFrequency="0.065" numOctaves="4" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="eg"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M68 310 Q55 295 52 270 L205 270 Q202 295 190 310 Q168 335 130 338 Q92 340 68 310Z" fill="#120008" stroke="#ff2d78" stroke-width="1.5" filter="url(#g2)" opacity="0.9"/>
+        <path d="M50 175 Q48 140 55 120 Q62 100 80 98 Q82 78 96 76 Q110 74 112 94 Q126 90 134 106 Q148 88 164 93 Q180 98 178 120 Q192 108 206 118 Q220 128 212 150 Q222 162 218 185 Q212 215 195 228 Q188 258 182 285 Q172 318 130 326 Q88 330 68 308 Q48 285 50 245 Q52 210 50 175Z" fill="#1a000d" stroke="#ff2d78" stroke-width="2" filter="url(#g1)"/>
+        <g style="animation:f1 3.8s ease-in-out infinite;transform-origin:80px 120px"><path d="M55 120 Q52 95 56 75 Q60 58 72 55 Q84 52 86 70 Q88 88 84 108" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2)"/></g>
+        <g style="animation:f2 4.4s ease-in-out infinite 0.3s;transform-origin:100px 105px"><path d="M82 100 Q80 72 84 50 Q88 32 102 30 Q116 28 116 48 Q116 68 112 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2)"/></g>
+        <g style="animation:f3 3.6s ease-in-out infinite 0.7s;transform-origin:128px 100px"><path d="M112 96 Q112 66 116 44 Q120 24 134 22 Q148 20 148 42 Q148 64 144 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2)"/></g>
+        <g style="animation:f4 4.1s ease-in-out infinite 0.5s;transform-origin:155px 105px"><path d="M142 100 Q144 72 148 52 Q152 34 166 36 Q180 38 178 60 Q176 82 172 110" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2)"/></g>
+        <g style="animation:f5 3.2s ease-in-out infinite 0.9s;transform-origin:195px 140px"><path d="M175 120 Q192 108 206 118 Q220 128 212 150 Q205 165 190 170" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2)"/></g>
+        <ellipse cx="122" cy="200" rx="44" ry="36" fill="#050505" stroke="#ff2d78" stroke-width="1.5" filter="url(#g1)" opacity="0.95"/>
+        <path d="M78 200 Q100 175 122 172 Q144 175 166 200Z" fill="#1a000d" stroke="#ff2d78" stroke-width="1.5"/>
+        <path d="M78 200 Q100 222 122 225 Q144 222 166 200Z" fill="#1a000d" stroke="#ff2d7866" stroke-width="1"/>
+        <circle cx="122" cy="200" r="22" fill="#ff2d78" filter="url(#eg)"/>
+        <circle cx="122" cy="200" r="11" fill="#050505"/>
+        <circle cx="128" cy="193" r="4" fill="white" opacity="0.7"/>
+        <path d="M114 235 Q112 252 110 268 Q108 278 106 288" stroke="#ff2d78" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.85"/>
+        <circle cx="104" cy="294" r="4" fill="#ff2d78" opacity="0.7"/>
+        <path d="M88 168 Q105 158 122 164" stroke="#ff2d78" stroke-width="5" stroke-linecap="round" filter="url(#g2)"/>
+      </svg>
+      <div style="position:absolute;bottom:0;left:50%;width:80px;height:10px;background:radial-gradient(ellipse,rgba(255,45,120,0.25) 0%,transparent 70%);border-radius:50%;transform:translateX(-50%);"></div>
+    </div>
+    <p class="desc">Two elliptical rings orbit the hand at different speeds with a glowing data node on each. Feels like something being observed or tracked — very sci-fi horror.</p>
+    <button class="select-btn" onclick="pick(this.parentElement,'a')">[ Select A ]</button>
+  </div>
+
+  <!-- B: HEX GRID + NODES -->
+  <div class="option" onclick="pick(this,'b')">
+    <div class="label">B // Hex Grid + Pulse Nodes</div>
+    <div class="stage" style="overflow:hidden;">
+      <div class="hex-bg"></div>
+      <!-- pulse nodes at corners -->
+      <div class="hex-node" style="top:10px;left:10px;animation-delay:0s;"></div>
+      <div class="hex-node" style="top:10px;right:10px;animation-delay:0.5s;"></div>
+      <div class="hex-node" style="bottom:30px;left:10px;animation-delay:1s;"></div>
+      <div class="hex-node" style="bottom:30px;right:10px;animation-delay:1.5s;"></div>
+      <!-- connecting lines -->
+      <div class="hex-line" style="top:14px;left:18px;right:18px;"></div>
+      <div class="hex-line" style="bottom:34px;left:18px;right:18px;"></div>
+      <!-- mini hand -->
+      <svg class="hand-svg" width="160" height="200" viewBox="0 0 260 340" fill="none">
+        <defs>
+          <filter id="g1b"><feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="g2b"><feTurbulence type="fractalNoise" baseFrequency="0.065" numOctaves="4" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="egb"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M68 310 Q55 295 52 270 L205 270 Q202 295 190 310 Q168 335 130 338 Q92 340 68 310Z" fill="#120008" stroke="#ff2d78" stroke-width="1.5" filter="url(#g2b)" opacity="0.9"/>
+        <path d="M50 175 Q48 140 55 120 Q62 100 80 98 Q82 78 96 76 Q110 74 112 94 Q126 90 134 106 Q148 88 164 93 Q180 98 178 120 Q192 108 206 118 Q220 128 212 150 Q222 162 218 185 Q212 215 195 228 Q188 258 182 285 Q172 318 130 326 Q88 330 68 308 Q48 285 50 245 Q52 210 50 175Z" fill="#1a000d" stroke="#ff2d78" stroke-width="2" filter="url(#g1b)"/>
+        <g style="animation:f1 3.8s ease-in-out infinite;transform-origin:80px 120px"><path d="M55 120 Q52 95 56 75 Q60 58 72 55 Q84 52 86 70 Q88 88 84 108" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2b)"/></g>
+        <g style="animation:f2 4.4s ease-in-out infinite 0.3s;transform-origin:100px 105px"><path d="M82 100 Q80 72 84 50 Q88 32 102 30 Q116 28 116 48 Q116 68 112 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2b)"/></g>
+        <g style="animation:f3 3.6s ease-in-out infinite 0.7s;transform-origin:128px 100px"><path d="M112 96 Q112 66 116 44 Q120 24 134 22 Q148 20 148 42 Q148 64 144 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2b)"/></g>
+        <g style="animation:f4 4.1s ease-in-out infinite 0.5s;transform-origin:155px 105px"><path d="M142 100 Q144 72 148 52 Q152 34 166 36 Q180 38 178 60 Q176 82 172 110" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2b)"/></g>
+        <g style="animation:f5 3.2s ease-in-out infinite 0.9s;transform-origin:195px 140px"><path d="M175 120 Q192 108 206 118 Q220 128 212 150 Q205 165 190 170" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2b)"/></g>
+        <ellipse cx="122" cy="200" rx="44" ry="36" fill="#050505" stroke="#ff2d78" stroke-width="1.5" filter="url(#g1b)" opacity="0.95"/>
+        <path d="M78 200 Q100 175 122 172 Q144 175 166 200Z" fill="#1a000d" stroke="#ff2d78" stroke-width="1.5"/>
+        <path d="M78 200 Q100 222 122 225 Q144 222 166 200Z" fill="#1a000d" stroke="#ff2d7866" stroke-width="1"/>
+        <circle cx="122" cy="200" r="22" fill="#ff2d78" filter="url(#egb)"/>
+        <circle cx="122" cy="200" r="11" fill="#050505"/>
+        <circle cx="128" cy="193" r="4" fill="white" opacity="0.7"/>
+        <path d="M114 235 Q112 252 110 268 Q108 278 106 288" stroke="#ff2d78" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.85"/>
+        <circle cx="104" cy="294" r="4" fill="#ff2d78" opacity="0.7"/>
+        <path d="M88 168 Q105 158 122 164" stroke="#ff2d78" stroke-width="5" stroke-linecap="round" filter="url(#g2b)"/>
+      </svg>
+      <div style="position:absolute;bottom:0;left:50%;width:80px;height:10px;background:radial-gradient(ellipse,rgba(255,45,120,0.25) 0%,transparent 70%);border-radius:50%;transform:translateX(-50%);"></div>
+    </div>
+    <p class="desc">Faint hex tiles fill the background, with small diamond nodes at each corner that pulse. Connects the mascot to a network — like it's a node in a system.</p>
+    <button class="select-btn" onclick="pick(this.parentElement,'b')">[ Select B ]</button>
+  </div>
+
+  <!-- C: EKG SIGNAL LINES -->
+  <div class="option" onclick="pick(this,'c')">
+    <div class="label">C // Heartbeat Signal</div>
+    <div class="stage">
+      <!-- EKG top -->
+      <div style="position:absolute;top:8px;left:0;right:0;">
+        <svg width="100%" height="28" viewBox="0 0 160 28" class="ekg-svg">
+          <polyline class="ekg-path" points="0,14 30,14 38,2 44,26 50,14 58,14 66,8 70,14 160,14" style="animation-delay:0s;"/>
+        </svg>
+      </div>
+      <!-- EKG bottom -->
+      <div style="position:absolute;bottom:8px;left:0;right:0;">
+        <svg width="100%" height="28" viewBox="0 0 160 28" class="ekg-svg">
+          <polyline class="ekg-path" points="0,14 20,14 28,4 34,24 40,14 50,14 90,14 98,6 104,22 110,14 160,14" style="animation-delay:1.5s;stroke-dasharray:400;"/>
+        </svg>
+      </div>
+      <!-- mini hand -->
+      <svg class="hand-svg" width="160" height="200" viewBox="0 0 260 340" fill="none">
+        <defs>
+          <filter id="g1c"><feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="g2c"><feTurbulence type="fractalNoise" baseFrequency="0.065" numOctaves="4" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="egc"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M68 310 Q55 295 52 270 L205 270 Q202 295 190 310 Q168 335 130 338 Q92 340 68 310Z" fill="#120008" stroke="#ff2d78" stroke-width="1.5" filter="url(#g2c)" opacity="0.9"/>
+        <path d="M50 175 Q48 140 55 120 Q62 100 80 98 Q82 78 96 76 Q110 74 112 94 Q126 90 134 106 Q148 88 164 93 Q180 98 178 120 Q192 108 206 118 Q220 128 212 150 Q222 162 218 185 Q212 215 195 228 Q188 258 182 285 Q172 318 130 326 Q88 330 68 308 Q48 285 50 245 Q52 210 50 175Z" fill="#1a000d" stroke="#ff2d78" stroke-width="2" filter="url(#g1c)"/>
+        <g style="animation:f1 3.8s ease-in-out infinite;transform-origin:80px 120px"><path d="M55 120 Q52 95 56 75 Q60 58 72 55 Q84 52 86 70 Q88 88 84 108" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2c)"/></g>
+        <g style="animation:f2 4.4s ease-in-out infinite 0.3s;transform-origin:100px 105px"><path d="M82 100 Q80 72 84 50 Q88 32 102 30 Q116 28 116 48 Q116 68 112 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2c)"/></g>
+        <g style="animation:f3 3.6s ease-in-out infinite 0.7s;transform-origin:128px 100px"><path d="M112 96 Q112 66 116 44 Q120 24 134 22 Q148 20 148 42 Q148 64 144 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2c)"/></g>
+        <g style="animation:f4 4.1s ease-in-out infinite 0.5s;transform-origin:155px 105px"><path d="M142 100 Q144 72 148 52 Q152 34 166 36 Q180 38 178 60 Q176 82 172 110" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2c)"/></g>
+        <g style="animation:f5 3.2s ease-in-out infinite 0.9s;transform-origin:195px 140px"><path d="M175 120 Q192 108 206 118 Q220 128 212 150 Q205 165 190 170" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2c)"/></g>
+        <ellipse cx="122" cy="200" rx="44" ry="36" fill="#050505" stroke="#ff2d78" stroke-width="1.5" filter="url(#g1c)" opacity="0.95"/>
+        <path d="M78 200 Q100 175 122 172 Q144 175 166 200Z" fill="#1a000d" stroke="#ff2d78" stroke-width="1.5"/>
+        <path d="M78 200 Q100 222 122 225 Q144 222 166 200Z" fill="#1a000d" stroke="#ff2d7866" stroke-width="1"/>
+        <circle cx="122" cy="200" r="22" fill="#ff2d78" filter="url(#egc)"/>
+        <circle cx="122" cy="200" r="11" fill="#050505"/>
+        <circle cx="128" cy="193" r="4" fill="white" opacity="0.7"/>
+        <path d="M114 235 Q112 252 110 268 Q108 278 106 288" stroke="#ff2d78" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.85"/>
+        <circle cx="104" cy="294" r="4" fill="#ff2d78" opacity="0.7"/>
+        <path d="M88 168 Q105 158 122 164" stroke="#ff2d78" stroke-width="5" stroke-linecap="round" filter="url(#g2c)"/>
+      </svg>
+      <div style="position:absolute;bottom:0;left:50%;width:80px;height:10px;background:radial-gradient(ellipse,rgba(255,45,120,0.25) 0%,transparent 70%);border-radius:50%;transform:translateX(-50%);"></div>
+    </div>
+    <p class="desc">Animated EKG/heartbeat lines sweep above and below the hand. Implies the mascot is alive and being monitored. Horror-medical crossover — unsettling in a quiet way.</p>
+    <button class="select-btn" onclick="pick(this.parentElement,'c')">[ Select C ]</button>
+  </div>
+
+  <!-- D: FLOATING DATA TAGS -->
+  <div class="option" onclick="pick(this,'d')">
+    <div class="label">D // Floating Data Tags</div>
+    <div class="stage">
+      <div class="data-tag" style="top:14px;left:-10px;animation-delay:0s;">PID_0x4F2</div>
+      <div class="data-tag" style="top:60px;right:-14px;animation-delay:0.8s;">ERR :: 0xDEAD</div>
+      <div class="data-tag" style="bottom:50px;left:-14px;animation-delay:1.4s;">ALIVE :: TRUE</div>
+      <div class="data-tag" style="bottom:14px;right:-10px;animation-delay:0.4s;">WATCHING</div>
+      <!-- mini hand -->
+      <svg class="hand-svg" width="160" height="200" viewBox="0 0 260 340" fill="none">
+        <defs>
+          <filter id="g1d"><feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="3" seed="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="g2d"><feTurbulence type="fractalNoise" baseFrequency="0.065" numOctaves="4" seed="8" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/></filter>
+          <filter id="egd"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <path d="M68 310 Q55 295 52 270 L205 270 Q202 295 190 310 Q168 335 130 338 Q92 340 68 310Z" fill="#120008" stroke="#ff2d78" stroke-width="1.5" filter="url(#g2d)" opacity="0.9"/>
+        <path d="M50 175 Q48 140 55 120 Q62 100 80 98 Q82 78 96 76 Q110 74 112 94 Q126 90 134 106 Q148 88 164 93 Q180 98 178 120 Q192 108 206 118 Q220 128 212 150 Q222 162 218 185 Q212 215 195 228 Q188 258 182 285 Q172 318 130 326 Q88 330 68 308 Q48 285 50 245 Q52 210 50 175Z" fill="#1a000d" stroke="#ff2d78" stroke-width="2" filter="url(#g1d)"/>
+        <g style="animation:f1 3.8s ease-in-out infinite;transform-origin:80px 120px"><path d="M55 120 Q52 95 56 75 Q60 58 72 55 Q84 52 86 70 Q88 88 84 108" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2d)"/></g>
+        <g style="animation:f2 4.4s ease-in-out infinite 0.3s;transform-origin:100px 105px"><path d="M82 100 Q80 72 84 50 Q88 32 102 30 Q116 28 116 48 Q116 68 112 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2d)"/></g>
+        <g style="animation:f3 3.6s ease-in-out infinite 0.7s;transform-origin:128px 100px"><path d="M112 96 Q112 66 116 44 Q120 24 134 22 Q148 20 148 42 Q148 64 144 96" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2d)"/></g>
+        <g style="animation:f4 4.1s ease-in-out infinite 0.5s;transform-origin:155px 105px"><path d="M142 100 Q144 72 148 52 Q152 34 166 36 Q180 38 178 60 Q176 82 172 110" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2d)"/></g>
+        <g style="animation:f5 3.2s ease-in-out infinite 0.9s;transform-origin:195px 140px"><path d="M175 120 Q192 108 206 118 Q220 128 212 150 Q205 165 190 170" fill="#1a000d" stroke="#ff2d78" stroke-width="1.8" stroke-linecap="round" filter="url(#g2d)"/></g>
+        <ellipse cx="122" cy="200" rx="44" ry="36" fill="#050505" stroke="#ff2d78" stroke-width="1.5" filter="url(#g1d)" opacity="0.95"/>
+        <path d="M78 200 Q100 175 122 172 Q144 175 166 200Z" fill="#1a000d" stroke="#ff2d78" stroke-width="1.5"/>
+        <path d="M78 200 Q100 222 122 225 Q144 222 166 200Z" fill="#1a000d" stroke="#ff2d7866" stroke-width="1"/>
+        <circle cx="122" cy="200" r="22" fill="#ff2d78" filter="url(#egd)"/>
+        <circle cx="122" cy="200" r="11" fill="#050505"/>
+        <circle cx="128" cy="193" r="4" fill="white" opacity="0.7"/>
+        <path d="M114 235 Q112 252 110 268 Q108 278 106 288" stroke="#ff2d78" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.85"/>
+        <circle cx="104" cy="294" r="4" fill="#ff2d78" opacity="0.7"/>
+        <path d="M88 168 Q105 158 122 164" stroke="#ff2d78" stroke-width="5" stroke-linecap="round" filter="url(#g2d)"/>
+      </svg>
+      <div style="position:absolute;bottom:0;left:50%;width:80px;height:10px;background:radial-gradient(ellipse,rgba(255,45,120,0.25) 0%,transparent 70%);border-radius:50%;transform:translateX(-50%);"></div>
+    </div>
+    <p class="desc">Small code labels float around the mascot — PID numbers, error codes, status strings. Like the mascot is a process being logged in real time. Very glitch-horror-OS.</p>
+    <button class="select-btn" onclick="pick(this.parentElement,'d')">[ Select D ]</button>
+  </div>
+
+</div>
+
+<script>
+  function pick(el, choice) {
+    document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'))
+    el.classList.add('selected')
+    if (window.__selectChoice) window.__selectChoice(choice, el.querySelector('.label').textContent)
+  }
+</script>
+</body>
+</html>

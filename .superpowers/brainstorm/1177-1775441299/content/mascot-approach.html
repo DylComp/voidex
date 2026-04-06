@@ -1,0 +1,117 @@
+<h2>How should the mascot be built?</h2>
+<p class="subtitle">All 3 use pink & black, have a cursor-following eye, and blink. The difference is feel and fidelity.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050505;padding:20px;border-bottom:1px solid #ff2d7844;min-height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,45,120,0.015) 2px,rgba(255,45,120,0.015) 4px);pointer-events:none;"></div>
+      <!-- SVG face mockup -->
+      <svg width="140" height="160" viewBox="0 0 140 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- rough hand/face shape -->
+        <path d="M30 140 Q20 100 25 70 Q28 40 50 25 Q70 10 90 25 Q112 40 115 70 Q120 100 110 140Z" fill="#1a0010" stroke="#ff2d78" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <!-- fingers dripping -->
+        <path d="M40 140 Q38 155 35 162 Q33 168 36 170" stroke="#ff2d78" stroke-width="2" fill="none"/>
+        <path d="M60 142 Q59 158 57 165 Q56 170 59 172" stroke="#ff2d78" stroke-width="2" fill="none"/>
+        <path d="M80 142 Q80 158 79 165 Q78 170 81 172" stroke="#ff2d78" stroke-width="2" fill="none"/>
+        <path d="M100 140 Q101 155 103 162 Q105 168 102 170" stroke="#ff2d78" stroke-width="2" fill="none"/>
+        <!-- eye socket -->
+        <ellipse cx="70" cy="72" rx="22" ry="18" fill="#050505" stroke="#ff2d7866" stroke-width="1"/>
+        <!-- iris -->
+        <circle cx="70" cy="72" r="10" fill="#ff2d78" opacity="0.9"/>
+        <!-- pupil -->
+        <circle cx="70" cy="72" r="5" fill="#050505"/>
+        <!-- highlight -->
+        <circle cx="73" cy="69" r="2" fill="white" opacity="0.6"/>
+        <!-- emo drip under eye -->
+        <path d="M70 90 Q69 98 68 105 Q67 110 66 114" stroke="#ff2d78" stroke-width="1.5" fill="none" opacity="0.7"/>
+        <!-- emo brow (angled heavy) -->
+        <path d="M50 52 Q60 46 72 50" stroke="#ff2d78" stroke-width="3" stroke-linecap="round"/>
+        <!-- scratchy texture lines -->
+        <path d="M35 80 Q40 82 38 85" stroke="#ff2d7833" stroke-width="1"/>
+        <path d="M95 75 Q100 78 98 82" stroke="#ff2d7833" stroke-width="1"/>
+        <path d="M45 100 Q52 102 50 106" stroke="#ff2d7833" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>A — SVG Vector</h3>
+      <p>Hand-crafted SVG shapes. Clean lines with grungy stroke dashes and drip details. Eye is an SVG element that moves. Scalable, crisp at any size.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050505;padding:20px;border-bottom:1px solid #ff2d7844;min-height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,45,120,0.015) 2px,rgba(255,45,120,0.015) 4px);"></div>
+      <!-- Canvas-style heavy grain mockup -->
+      <div style="position:relative;width:140px;height:160px;">
+        <svg width="140" height="160" viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg">
+          <filter id="grain">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch"/>
+            <feColorMatrix type="saturate" values="0"/>
+            <feBlend in="SourceGraphic" mode="multiply"/>
+          </filter>
+          <filter id="grit">
+            <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+          </filter>
+          <!-- Face blob with grit distortion -->
+          <path d="M28 138 Q18 98 24 68 Q28 38 52 22 Q70 8 92 22 Q114 38 118 68 Q124 98 112 138Z" fill="#1a0010" stroke="#ff2d78" stroke-width="2" filter="url(#grit)"/>
+          <!-- Heavy ink smear fingers -->
+          <path d="M38 138 Q34 158 30 168 Q28 174 32 176" stroke="#ff2d78" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#grit)"/>
+          <path d="M58 141 Q56 162 54 170 Q53 176 57 178" stroke="#ff2d78" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#grit)"/>
+          <path d="M80 141 Q80 162 79 170 Q78 176 82 178" stroke="#ff2d78" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#grit)"/>
+          <path d="M102 138 Q105 158 108 168 Q110 174 107 176" stroke="#ff2d78" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#grit)"/>
+          <!-- Eye -->
+          <ellipse cx="70" cy="72" rx="24" ry="20" fill="#050505" stroke="#ff2d78" stroke-width="1.5" filter="url(#grit)"/>
+          <circle cx="70" cy="72" r="12" fill="#ff2d78"/>
+          <circle cx="70" cy="72" r="6" fill="#050505"/>
+          <circle cx="74" cy="68" r="2.5" fill="white" opacity="0.7"/>
+          <!-- Eye drip -->
+          <path d="M66 92 Q65 104 63 114 Q62 120 60 126" stroke="#ff2d78" stroke-width="2" fill="none" opacity="0.8" filter="url(#grit)"/>
+          <!-- Heavy emo brow -->
+          <path d="M47 50 Q60 42 74 48" stroke="#ff2d78" stroke-width="4" stroke-linecap="round" filter="url(#grit)"/>
+          <!-- Ink splatters -->
+          <circle cx="42" cy="95" r="2" fill="#ff2d78" opacity="0.4"/>
+          <circle cx="96" cy="88" r="1.5" fill="#ff2d78" opacity="0.3"/>
+          <circle cx="55" cy="115" r="1" fill="#ff2d78" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — SVG + Noise Filters</h3>
+      <p>SVG with feTurbulence/feDisplacementMap filters to distort edges and add ink-bleed grit. Closest to the hand-drawn original. More organic, slightly heavier to render.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#050505;padding:20px;border-bottom:1px solid #ff2d7844;min-height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,45,120,0.015) 2px,rgba(255,45,120,0.015) 4px);"></div>
+      <!-- CSS shapes -->
+      <div style="position:relative;width:120px;height:150px;">
+        <!-- face -->
+        <div style="position:absolute;top:0;left:10px;width:100px;height:120px;background:#1a0010;border:2px solid #ff2d78;border-radius:50% 50% 40% 40%;clip-path:polygon(10% 0%,90% 0%,100% 100%,80% 95%,60% 100%,50% 90%,40% 100%,20% 95%,0% 100%);box-shadow:0 0 20px #ff2d7833;"></div>
+        <!-- eye -->
+        <div style="position:absolute;top:40px;left:35px;width:50px;height:42px;background:#050505;border-radius:50%;border:1.5px solid #ff2d7888;display:flex;align-items:center;justify-content:center;">
+          <div style="width:24px;height:24px;background:#ff2d78;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 12px #ff2d78;">
+            <div style="width:10px;height:10px;background:#050505;border-radius:50%;"></div>
+          </div>
+        </div>
+        <!-- brow -->
+        <div style="position:absolute;top:28px;left:28px;width:50px;height:5px;background:#ff2d78;border-radius:3px;transform:rotate(-8deg);"></div>
+        <!-- drip -->
+        <div style="position:absolute;top:82px;left:42px;width:3px;height:30px;background:linear-gradient(#ff2d78,transparent);border-radius:2px;"></div>
+        <!-- fingers -->
+        <div style="position:absolute;bottom:0;left:5px;width:8px;height:28px;background:#1a0010;border:1.5px solid #ff2d78;border-radius:0 0 4px 4px;"></div>
+        <div style="position:absolute;bottom:0;left:22px;width:8px;height:34px;background:#1a0010;border:1.5px solid #ff2d78;border-radius:0 0 4px 4px;"></div>
+        <div style="position:absolute;bottom:0;left:56px;width:8px;height:34px;background:#1a0010;border:1.5px solid #ff2d78;border-radius:0 0 4px 4px;"></div>
+        <div style="position:absolute;bottom:0;left:73px;width:8px;height:28px;background:#1a0010;border:1.5px solid #ff2d78;border-radius:0 0 4px 4px;"></div>
+        <div style="position:absolute;bottom:0;left:89px;width:8px;height:20px;background:#1a0010;border:1.5px solid #ff2d78;border-radius:0 0 4px 4px;"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — CSS Shapes</h3>
+      <p>Pure CSS divs and clip-paths. Fastest, simplest to animate. Less organic — more geometric/stylized. Good for a cleaner mascot vibe.</p>
+    </div>
+  </div>
+
+</div>
