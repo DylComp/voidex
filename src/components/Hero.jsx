@@ -108,9 +108,9 @@ export default function Hero() {
         {/* Pump.fun profile */}
         <div className="anim-5" style={{ maxWidth: 520 }}>
           <div style={{
-            fontSize: '0.48rem', letterSpacing: '4px',
+            fontSize: '0.65rem', letterSpacing: '4px',
             color: '#ff2d78', textTransform: 'uppercase',
-            marginBottom: 8,
+            marginBottom: 10,
             textShadow: '0 0 12px rgba(255,45,120,0.6)',
           }}>
             // pumpfun profile
@@ -121,13 +121,13 @@ export default function Hero() {
             rel="noopener noreferrer"
             style={{
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '0.6rem', letterSpacing: '2px',
+              fontSize: '1rem', letterSpacing: '2px',
               color: '#ff2d78', textDecoration: 'none',
-              borderBottom: '1px solid #ff2d78',
-              paddingBottom: 2,
+              borderBottom: '2px solid #ff2d78',
+              paddingBottom: 4,
               display: 'inline-block',
               textShadow: '0 0 12px rgba(255,45,120,0.6)',
-              transition: 'color 0.2s, text-shadow 0.2s, letter-spacing 0.2s, box-shadow 0.2s',
+              transition: 'color 0.2s, text-shadow 0.2s, letter-spacing 0.2s',
             }}
             onMouseEnter={e => {
               e.currentTarget.style.color = '#fff'
