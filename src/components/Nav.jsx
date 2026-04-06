@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react'
 
-const links = ['Protocol', 'Modules', 'Collective', 'Dispatch']
+const links = [
+  { label: 'Confess',    href: '#confess' },
+  { label: 'Scan',       href: '#scan' },
+  { label: 'Archetypes', href: '#archetypes' },
+  { label: 'Feed',       href: '#feed' },
+]
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false)
@@ -11,75 +16,69 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const navStyle = {
+    position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+    padding: scrolled ? '12px 48px' : '22px 48px',
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    transition: 'padding 0.3s ease, background 0.3s ease',
+    background: scrolled ? 'rgba(5,5,5,0.92)' : 'transparent',
+    backdropFilter: scrolled ? 'blur(16px)' : 'none',
+    borderBottom: scrolled ? '1px solid rgba(255,45,120,0.1)' : 'none',
+  }
+
   return (
-    <nav style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      padding: scrolled ? '12px 40px' : '24px 40px',
-      transition: 'padding 0.3s ease, background 0.3s ease, backdrop-filter 0.3s ease',
-      background: scrolled ? 'rgba(250, 248, 244, 0.8)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(20px)' : 'none',
-      borderBottom: scrolled ? '1px solid rgba(201, 185, 234, 0.3)' : 'none',
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    }}>
+    <nav style={navStyle}>
       {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <div>
         <div style={{
-          width: 28, height: 28, borderRadius: 6,
-          background: 'linear-gradient(135deg, var(--lavender), var(--mint))',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: 'JetBrains Mono, monospace',
+          fontWeight: 700, fontSize: '1rem',
+          letterSpacing: '4px', textTransform: 'uppercase',
         }}>
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <circle cx="7" cy="7" r="2.5" fill="white" fillOpacity="0.9" />
-            <circle cx="2" cy="7" r="1.5" fill="white" fillOpacity="0.5" />
-            <circle cx="12" cy="7" r="1.5" fill="white" fillOpacity="0.5" />
-            <circle cx="7" cy="2" r="1.5" fill="white" fillOpacity="0.5" />
-            <circle cx="7" cy="12" r="1.5" fill="white" fillOpacity="0.5" />
-            <line x1="2" y1="7" x2="4.5" y2="7" stroke="white" strokeOpacity="0.4" strokeWidth="1" />
-            <line x1="9.5" y1="7" x2="12" y2="7" stroke="white" strokeOpacity="0.4" strokeWidth="1" />
-            <line x1="7" y1="2" x2="7" y2="4.5" stroke="white" strokeOpacity="0.4" strokeWidth="1" />
-            <line x1="7" y1="9.5" x2="7" y2="12" stroke="white" strokeOpacity="0.4" strokeWidth="1" />
-          </svg>
+          <span style={{ color: '#fff' }}>VOID</span>
+          <span style={{ color: 'var(--pink)' }}>EX</span>
         </div>
-        <span style={{
-          fontFamily: 'Cinzel, serif', fontSize: '0.85rem',
-          fontWeight: 700, letterSpacing: '0.18em',
-          color: 'var(--ink)', textTransform: 'uppercase',
+        <div style={{
+          fontSize: '0.5rem', letterSpacing: '3px',
+          color: 'var(--text-dim)', marginTop: 1,
         }}>
-          SYNAPSE
-        </span>
+          // VOID.EX — PID_0x4F2
+        </div>
       </div>
 
       {/* Links */}
-      <div style={{ display: 'flex', gap: 36, alignItems: 'center' }}>
-        {links.map(link => (
-          <a key={link} href={`#${link.toLowerCase()}`} style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.7rem', letterSpacing: '0.12em',
-            color: 'var(--ink-soft)', textDecoration: 'none',
-            textTransform: 'uppercase',
-            transition: 'color 0.2s ease',
-          }}
-          onMouseEnter={e => e.target.style.color = 'var(--ink)'}
-          onMouseLeave={e => e.target.style.color = 'var(--ink-soft)'}
+      <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+        {links.map(({ label, href }) => (
+          <a
+            key={label}
+            href={href}
+            style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.62rem', letterSpacing: '3px',
+              color: 'var(--text-dim)', textDecoration: 'none',
+              textTransform: 'uppercase',
+              transition: 'color 0.2s ease',
+            }}
+            onMouseEnter={e => e.target.style.color = 'var(--pink)'}
+            onMouseLeave={e => e.target.style.color = 'var(--text-dim)'}
           >
-            {link}
+            {label}
           </a>
         ))}
-        <button style={{
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '0.68rem', letterSpacing: '0.14em',
-          color: 'white', textTransform: 'uppercase',
-          background: 'linear-gradient(135deg, var(--lavender), var(--blush))',
-          border: 'none', borderRadius: 8,
-          padding: '8px 18px',
-          cursor: 'none',
-          transition: 'opacity 0.2s ease, transform 0.2s ease',
-          boxShadow: '0 4px 20px rgba(200, 140, 200, 0.3)',
-        }}
-        onMouseEnter={e => { e.target.style.opacity = '0.85'; e.target.style.transform = 'translateY(-1px)' }}
-        onMouseLeave={e => { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)' }}
+        <button
+          style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '0.6rem', letterSpacing: '3px',
+            textTransform: 'uppercase',
+            color: 'var(--pink)', background: 'transparent',
+            border: '1px solid var(--pink)',
+            padding: '8px 18px', cursor: 'none',
+            transition: 'background 0.2s, color 0.2s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = 'var(--pink)'; e.currentTarget.style.color = '#000' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--pink)' }}
         >
-          Initiate
+          [ Initiate ]
         </button>
       </div>
     </nav>
