@@ -1,9 +1,9 @@
 export default function Footer() {
   const footerLinks = [
-    { label: 'Protocol', href: '#protocol' },
-    { label: 'Modules',  href: '#modules' },
-    { label: 'Collective', href: '#collective' },
-    { label: 'Dispatch', href: '#dispatch' },
+    { label: 'Confess',    href: '#confess' },
+    { label: 'Feed',       href: '#feed' },
+    { label: 'Archetypes', href: '#archetypes' },
+    { label: 'About',      href: '#about' },
   ]
 
   return (
@@ -55,7 +55,7 @@ export default function Footer() {
         fontSize: '0.52rem', letterSpacing: '3px',
         color: 'var(--text-dim)',
       }}>
-        © Epoch V — The Void
+        © 2025 VOIDEX
       </span>
     </footer>
   )

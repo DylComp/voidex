@@ -6,10 +6,6 @@ import Confess from './components/Confess'
 import Archetypes from './components/Archetypes'
 import Feed from './components/Feed'
 import About from './components/About'
-import Protocol from './components/Protocol'
-import Modules from './components/Modules'
-import Collective from './components/Collective'
-import Dispatch from './components/Dispatch'
 import Footer from './components/Footer'
 
 function App() {
@@ -29,10 +25,6 @@ function App() {
         <Feed />
         <Archetypes />
         <About />
-        <Protocol />
-        <Modules />
-        <Collective />
-        <Dispatch />
         <Footer />
       </div>
     </div>
