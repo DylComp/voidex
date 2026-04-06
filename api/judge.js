@@ -57,7 +57,7 @@ export default async function handler(req, res) {
       const sql = neon(process.env.voidex_POSTGRES_URL)
       await sql`
         INSERT INTO feed (confession, archetype, delusion_score)
-        VALUES (${text.slice(0, 80)}, ${judgment.archetype}, ${judgment.delusion_score})
+        VALUES (${text}, ${judgment.archetype}, ${judgment.delusion_score})
       `
     } catch (dbErr) {
       console.error('Feed insert failed:', dbErr)
