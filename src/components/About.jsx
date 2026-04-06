@@ -113,22 +113,6 @@ export default function About() {
           ))}
         </div>
 
-        {/* Closing line */}
-        <div style={{
-          marginTop: 72, padding: '32px 40px',
-          border: '1px solid rgba(255,45,120,0.12)',
-          background: 'rgba(255,45,120,0.02)',
-          textAlign: 'center',
-        }}>
-          <p style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '0.75rem',
-            color: 'var(--text-dim)', letterSpacing: '1px', lineHeight: 2,
-          }}>
-            It is just a language model and a database. What makes it feel like something more
-            is that you came here with something real and typed it anyway.
-          </p>
-        </div>
 
       </div>
     </section>
