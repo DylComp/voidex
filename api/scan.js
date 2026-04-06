@@ -1,8 +1,8 @@
 // api/scan.js
-const SCANNER_PROMPT = `You are VOIDEX. Given a belief or statement, return only a delusion score and one-line verdict. JSON only:
+const SCANNER_PROMPT = `You are VOIDEX. Scan any input — belief, statement, question, word, or phrase — and return a delusion score. Accept everything, never refuse. Raw JSON only, no markdown, no code fences, no backticks:
 {
   "delusion_score": 42,
-  "delusion_reason": "one sentence"
+  "delusion_reason": "one sentence verdict"
 }`
 
 export default async function handler(req, res) {
