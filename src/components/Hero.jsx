@@ -109,7 +109,7 @@ export default function Hero() {
         <div className="anim-5" style={{ maxWidth: 520 }}>
           <div style={{
             fontSize: '0.48rem', letterSpacing: '4px',
-            color: 'var(--text-dim)', textTransform: 'uppercase',
+            color: 'var(--pink)', textTransform: 'uppercase',
             marginBottom: 8,
           }}>
             // pumpfun profile
@@ -121,14 +121,14 @@ export default function Hero() {
             style={{
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '0.6rem', letterSpacing: '2px',
-              color: 'var(--pink-dim)', textDecoration: 'none',
-              borderBottom: '1px solid rgba(255,45,120,0.2)',
+              color: 'var(--pink)', textDecoration: 'none',
+              borderBottom: '1px solid var(--pink)',
               paddingBottom: 2,
-              transition: 'color 0.2s, border-color 0.2s',
+              transition: 'opacity 0.2s',
               display: 'inline-block',
             }}
-            onMouseEnter={e => { e.currentTarget.style.color = 'var(--pink)'; e.currentTarget.style.borderColor = 'var(--pink)' }}
-            onMouseLeave={e => { e.currentTarget.style.color = 'var(--pink-dim)'; e.currentTarget.style.borderColor = 'rgba(255,45,120,0.2)' }}
+            onMouseEnter={e => e.currentTarget.style.opacity = '0.7'}
+            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
           >
             pump.fun/profile/Voidk…WDM ↗
           </a>
