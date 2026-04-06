@@ -109,12 +109,12 @@ function FeedEntry({ entry, index }) {
         opacity: 0,
         animation: `fadeUp 0.5s ease forwards ${index * 0.06}s`,
         cursor: 'pointer',
-        transition: 'background 0.2s',
+        transition: 'background 0.6s ease, box-shadow 0.6s ease',
         background: open ? 'rgba(255,45,120,0.03)' : 'transparent',
       }}
       onClick={() => setOpen(o => !o)}
-      onMouseEnter={e => { if (!open) e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
-      onMouseLeave={e => { if (!open) e.currentTarget.style.background = 'transparent' }}
+      onMouseEnter={e => { if (!open) { e.currentTarget.style.background = 'rgba(255,45,120,0.04)'; e.currentTarget.style.boxShadow = 'inset 0 0 40px rgba(255,45,120,0.06), 0 0 20px rgba(255,45,120,0.04)' } }}
+      onMouseLeave={e => { if (!open) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.boxShadow = 'none' } }}
     >
       {/* Collapsed row */}
       <div style={{
