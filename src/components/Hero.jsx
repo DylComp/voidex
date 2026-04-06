@@ -104,6 +104,35 @@ export default function Hero() {
         <div className="anim-5" style={{ maxWidth: 520 }}>
           <Terminal />
         </div>
+
+        {/* Pump.fun profile */}
+        <div className="anim-5" style={{ maxWidth: 520 }}>
+          <div style={{
+            fontSize: '0.48rem', letterSpacing: '4px',
+            color: 'var(--text-dim)', textTransform: 'uppercase',
+            marginBottom: 8,
+          }}>
+            // pumpfun profile
+          </div>
+          <a
+            href="https://pump.fun/profile/Voidkyp6pRUKLcvZxoGcff7aW5Lz7CPdEQQKVdexWDM"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.6rem', letterSpacing: '2px',
+              color: 'var(--pink-dim)', textDecoration: 'none',
+              borderBottom: '1px solid rgba(255,45,120,0.2)',
+              paddingBottom: 2,
+              transition: 'color 0.2s, border-color 0.2s',
+              display: 'inline-block',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.color = 'var(--pink)'; e.currentTarget.style.borderColor = 'var(--pink)' }}
+            onMouseLeave={e => { e.currentTarget.style.color = 'var(--pink-dim)'; e.currentTarget.style.borderColor = 'rgba(255,45,120,0.2)' }}
+          >
+            pump.fun/profile/Voidk…WDM ↗
+          </a>
+        </div>
       </div>
 
       {/* Right: mascot */}
