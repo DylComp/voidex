@@ -109,8 +109,9 @@ export default function Hero() {
         <div className="anim-5" style={{ maxWidth: 520 }}>
           <div style={{
             fontSize: '0.48rem', letterSpacing: '4px',
-            color: 'var(--pink)', textTransform: 'uppercase',
+            color: '#ff2d78', textTransform: 'uppercase',
             marginBottom: 8,
+            textShadow: '0 0 12px rgba(255,45,120,0.6)',
           }}>
             // pumpfun profile
           </div>
@@ -121,14 +122,25 @@ export default function Hero() {
             style={{
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '0.6rem', letterSpacing: '2px',
-              color: 'var(--pink)', textDecoration: 'none',
-              borderBottom: '1px solid var(--pink)',
+              color: '#ff2d78', textDecoration: 'none',
+              borderBottom: '1px solid #ff2d78',
               paddingBottom: 2,
-              transition: 'opacity 0.2s',
               display: 'inline-block',
+              textShadow: '0 0 12px rgba(255,45,120,0.6)',
+              transition: 'color 0.2s, text-shadow 0.2s, letter-spacing 0.2s, box-shadow 0.2s',
             }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.7'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = '#fff'
+              e.currentTarget.style.textShadow = '0 0 20px #ff2d78, 0 0 40px rgba(255,45,120,0.5)'
+              e.currentTarget.style.letterSpacing = '3px'
+              e.currentTarget.style.borderBottomColor = '#fff'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = '#ff2d78'
+              e.currentTarget.style.textShadow = '0 0 12px rgba(255,45,120,0.6)'
+              e.currentTarget.style.letterSpacing = '2px'
+              e.currentTarget.style.borderBottomColor = '#ff2d78'
+            }}
           >
             pump.fun/profile/Voidk…WDM ↗
           </a>
