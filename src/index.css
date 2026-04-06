@@ -15,7 +15,11 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,45,120,0.25) #0d0008;
+}
 
 body {
   font-family: 'JetBrains Mono', monospace;
@@ -156,6 +160,7 @@ body::after {
 /* === DELUSION BAR === */
 @keyframes barFill {
   from { width: 0%; }
+  to   { width: 100%; }
 }
 .delusion-bar-fill {
   height: 100%;
