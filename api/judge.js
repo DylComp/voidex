@@ -40,12 +40,12 @@ export default async function handler(req, res) {
   }
 
   const data = await upstream.json()
-  console.log('Anthropic raw response:', JSON.stringify(data))
   const content = data.content?.[0]?.text
   if (!content) return res.status(502).json({ error: 'Oracle returned unreadable output' })
+  const cleaned = content.trim().replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '')
   let judgment
   try {
-    judgment = JSON.parse(content.trim())
+    judgment = JSON.parse(cleaned)
   } catch {
     return res.status(502).json({ error: 'Oracle returned unreadable output' })
   }

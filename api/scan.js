@@ -36,8 +36,9 @@ export default async function handler(req, res) {
   const data = await upstream.json()
   const content = data.content?.[0]?.text
   if (!content) return res.status(502).json({ error: 'Oracle returned unreadable output' })
+  const cleaned = content.trim().replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '')
   try {
-    return res.status(200).json(JSON.parse(content.trim()))
+    return res.status(200).json(JSON.parse(cleaned))
   } catch {
     return res.status(502).json({ error: 'Oracle returned unreadable output' })
   }
