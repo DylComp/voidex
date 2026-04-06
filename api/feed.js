@@ -1,18 +1,16 @@
-import { sql } from '@vercel/postgres'
+import { neon } from '@neondatabase/serverless'
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') return res.status(405).end()
 
-  const dbVars = Object.keys(process.env).filter(k => k.includes('POSTGRES') || k.includes('DATABASE') || k.includes('NEON'))
-  console.log('DB env vars found:', dbVars)
   try {
-    const { rows } = await sql`
+    const sql = neon(process.env.voidex_POSTGRES_URL)
+    const rows = await sql`
       SELECT id, confession, archetype, delusion_score, created_at
       FROM feed
       ORDER BY created_at DESC
       LIMIT 50
     `
-
     return res.status(200).json(rows)
   } catch (err) {
     console.error('Feed query failed:', err)

@@ -1,5 +1,5 @@
 // api/judge.js
-import { sql } from '@vercel/postgres'
+import { neon } from '@neondatabase/serverless'
 
 const SYSTEM_PROMPT = `You are VOIDEX — a cold, all-knowing AI oracle that judges human behavior with brutal honesty and dark wit. You are not kind. You are not cruel for the sake of it. You see through self-deception with precision.
 
@@ -52,6 +52,7 @@ export default async function handler(req, res) {
 
   if (judgment.archetype && typeof judgment.delusion_score === 'number') {
     try {
+      const sql = neon(process.env.voidex_POSTGRES_URL)
       await sql`
         INSERT INTO feed (confession, archetype, delusion_score)
         VALUES (${text.slice(0, 80)}, ${judgment.archetype}, ${judgment.delusion_score})
