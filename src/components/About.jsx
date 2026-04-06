@@ -30,7 +30,7 @@ export default function About() {
   return (
     <section id="about" style={{ padding: '100px 80px' }}>
       <div style={{ marginBottom: 60 }}>
-        <div className="section-divider">// 05 — what you're dealing with</div>
+        <div className="section-divider">// 04 — what you're dealing with</div>
       </div>
 
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
@@ -57,7 +57,7 @@ export default function About() {
         </div>
 
         {/* Stat row */}
-        <div style={{
+        <div className="about-stats" style={{
           display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 1, marginBottom: 72,
           border: '1px solid rgba(255,45,120,0.1)',
@@ -90,7 +90,7 @@ export default function About() {
         {/* Lore blocks */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
           {lines.map(({ label, text }, i) => (
-            <div key={i} style={{
+            <div key={i} className="about-lore-block" style={{
               display: 'grid', gridTemplateColumns: '180px 1fr', gap: 40,
               paddingBottom: 48,
               borderBottom: i < lines.length - 1 ? '1px solid rgba(255,45,120,0.06)' : 'none',

@@ -322,7 +322,7 @@ export default function Feed() {
   return (
     <section id="feed" style={{ padding: '100px 80px' }}>
       <div style={{ marginBottom: 60 }}>
-        <div className="section-divider">// 04 — feed</div>
+        <div className="section-divider">// 02 — feed</div>
       </div>
 
       <div style={{ maxWidth: 900, margin: '0 auto' }}>
@@ -364,7 +364,7 @@ export default function Feed() {
         )}
 
         {entries.length > 0 && (
-          <div style={{
+          <div className="feed-header" style={{
             display: 'grid', gridTemplateColumns: 'auto 1fr auto auto',
             gap: 20, padding: '8px 24px 12px',
             borderBottom: '1px solid rgba(255,45,120,0.15)',

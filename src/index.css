@@ -280,4 +280,28 @@ body::after {
   /* Nav: hide text links, keep logo + button */
   .nav-links > a { display: none !important; }
   .nav-links { gap: 0 !important; }
+
+  /* About: stat grid 2 cols on mobile */
+  .about-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* About: lore blocks single column */
+  .about-lore-block {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Feed: hide header row, stack nicely */
+  .feed-header { display: none !important; }
+  .feed-entry {
+    grid-template-columns: auto 1fr auto !important;
+  }
+
+  /* Footer: center stack */
+  footer {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 32px 24px !important;
+  }
 }
