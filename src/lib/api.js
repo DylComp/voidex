@@ -40,8 +40,13 @@ export async function judgeConfession(text) {
   }
 
   const data = await res.json()
-  const raw = data.content[0].text.trim()
-  return JSON.parse(raw)
+  const content = data.content?.[0]?.text
+  if (!content) throw new Error('Unexpected API response shape')
+  try {
+    return JSON.parse(content.trim())
+  } catch {
+    throw new Error('VOIDEX returned non-JSON: ' + content.slice(0, 80))
+  }
 }
 
 export async function scanStatement(text) {
@@ -66,5 +71,11 @@ export async function scanStatement(text) {
 
   if (!res.ok) throw new Error(`API error ${res.status}`)
   const data = await res.json()
-  return JSON.parse(data.content[0].text.trim())
+  const content = data.content?.[0]?.text
+  if (!content) throw new Error('Unexpected API response shape')
+  try {
+    return JSON.parse(content.trim())
+  } catch {
+    throw new Error('VOIDEX returned non-JSON: ' + content.slice(0, 80))
+  }
 }

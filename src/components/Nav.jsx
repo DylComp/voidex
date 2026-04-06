@@ -59,8 +59,8 @@ export default function Nav() {
               textTransform: 'uppercase',
               transition: 'color 0.2s ease',
             }}
-            onMouseEnter={e => e.target.style.color = 'var(--pink)'}
-            onMouseLeave={e => e.target.style.color = 'var(--text-dim)'}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--pink)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--text-dim)'}
           >
             {label}
           </a>

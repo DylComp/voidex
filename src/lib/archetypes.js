@@ -52,5 +52,8 @@ export const ARCHETYPES = [
 ]
 
 export function getArchetype(name) {
-  return ARCHETYPES.find(a => a.name === name) || ARCHETYPES[0]
+  if (!name) return null
+  const match = ARCHETYPES.find(a => a.name.toLowerCase() === name.toLowerCase())
+  if (!match) console.warn(`VOIDEX: unknown archetype "${name}"`)
+  return match || null
 }

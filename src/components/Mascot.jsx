@@ -28,11 +28,12 @@ export default function Mascot() {
     }
 
     let blinkTimer
+    let blinkInnerTimer
     const scheduleBlink = () => {
       blinkTimer = setTimeout(() => {
         if (!eyelidRef.current) return
         eyelidRef.current.setAttribute('d', 'M78 200 Q100 226 122 228 Q144 226 166 200Z')
-        setTimeout(() => {
+        blinkInnerTimer = setTimeout(() => {
           eyelidRef.current?.setAttribute('d', 'M78 200 Q100 175 122 172 Q144 175 166 200Z')
           scheduleBlink()
         }, 130)
@@ -45,6 +46,7 @@ export default function Mascot() {
     return () => {
       window.removeEventListener('mousemove', onMove)
       clearTimeout(blinkTimer)
+      clearTimeout(blinkInnerTimer)
       clearTimeout(initialBlink)
     }
   }, [])
