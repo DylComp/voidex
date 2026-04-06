@@ -109,7 +109,7 @@ function FeedEntry({ entry, index }) {
         opacity: 0,
         animation: `fadeUp 0.5s ease forwards ${index * 0.06}s`,
         cursor: 'pointer',
-        transition: 'background 0.6s ease, box-shadow 0.6s ease',
+        transition: 'none',
         background: open ? 'rgba(255,45,120,0.03)' : 'transparent',
       }}
       onClick={() => setOpen(o => !o)}
