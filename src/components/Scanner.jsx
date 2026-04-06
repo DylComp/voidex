@@ -101,11 +101,26 @@ export default function Scanner() {
 
         {error && (
           <div style={{
-            marginTop: 20, padding: '14px 18px',
+            marginTop: 20, padding: '20px 24px',
             border: '1px solid rgba(255,45,120,0.3)',
-            fontSize: '0.62rem', color: 'var(--pink)', letterSpacing: '2px',
+            background: 'rgba(255,45,120,0.05)',
           }}>
-            ERR :: {error}
+            <div style={{
+              fontSize: '0.52rem', letterSpacing: '4px',
+              color: 'var(--pink)', textTransform: 'uppercase', marginBottom: 8,
+            }}>
+              // SCAN FAILED
+            </div>
+            <div style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.7rem', color: 'var(--text-dim)',
+            }}>
+              {error.includes('502') || error.includes('Upstream')
+                ? 'The oracle is unreachable. Try again.'
+                : error.includes('fetch')
+                ? 'Network error. Check your connection.'
+                : error}
+            </div>
           </div>
         )}
 
