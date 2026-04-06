@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { judgeConfession } from '../lib/api'
-import { saveToHistory, saveToFeed } from '../lib/storage'
+import { saveToHistory } from '../lib/storage'
 
 const ARCHETYPE_COLORS = {
   Chaser: '#ff6b35', Believer: '#c77dff', Hesitator: '#4cc9f0',
@@ -158,7 +158,6 @@ export default function Confess() {
         ...judgment,
       }
       saveToHistory(entry)
-      saveToFeed({ confession: text.slice(0, 80), archetype: judgment.archetype, delusion_score: judgment.delusion_score })
     } catch (err) {
       setError(err.message)
     } finally {
@@ -245,13 +244,26 @@ export default function Confess() {
 
         {error && (
           <div style={{
-            marginTop: 24, padding: '16px 20px',
+            marginTop: 24, padding: '20px 24px',
             border: '1px solid rgba(255,45,120,0.3)',
             background: 'rgba(255,45,120,0.05)',
-            fontSize: '0.65rem', letterSpacing: '2px',
-            color: 'var(--pink)',
           }}>
-            ERR :: {error}
+            <div style={{
+              fontSize: '0.52rem', letterSpacing: '4px',
+              color: 'var(--pink)', textTransform: 'uppercase', marginBottom: 8,
+            }}>
+              // TRANSMISSION FAILED
+            </div>
+            <div style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              fontSize: '0.7rem', color: 'var(--text-dim)',
+            }}>
+              {error.includes('502') || error.includes('Upstream')
+                ? 'The oracle is unreachable. Try again.'
+                : error.includes('fetch')
+                ? 'Network error. Check your connection.'
+                : error}
+            </div>
           </div>
         )}
 
