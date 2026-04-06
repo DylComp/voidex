@@ -13,7 +13,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section style={{
+    <section className="hero-section" style={{
       minHeight: '100vh',
       display: 'grid',
       gridTemplateColumns: '1fr 1fr',
@@ -107,7 +107,7 @@ export default function Hero() {
       </div>
 
       {/* Right: mascot */}
-      <div style={{
+      <div className="hero-mascot" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         position: 'relative',
       }}>

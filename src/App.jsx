@@ -2,6 +2,11 @@ import Cursor from './components/Cursor'
 import BlobField from './components/BlobField'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
+import Confess from './components/Confess'
+import Scanner from './components/Scanner'
+import Archetypes from './components/Archetypes'
+import Feed from './components/Feed'
+import History from './components/History'
 import Protocol from './components/Protocol'
 import Modules from './components/Modules'
 import Collective from './components/Collective'
@@ -21,6 +26,11 @@ function App() {
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Nav />
         <Hero />
+        <Confess />
+        <Scanner />
+        <Archetypes />
+        <Feed />
+        <History />
         <Protocol />
         <Modules />
         <Collective />

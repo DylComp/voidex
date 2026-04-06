@@ -168,3 +168,28 @@ body::after {
   animation: barFill 1.2s ease forwards;
   border-radius: 2px;
 }
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  /* Collapse horizontal section padding */
+  section {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  /* Hero: single column, hide mascot */
+  .hero-section {
+    grid-template-columns: 1fr !important;
+    padding-top: 100px !important;
+    padding-bottom: 40px !important;
+    gap: 32px !important;
+  }
+  .hero-mascot { display: none !important; }
+
+  /* Section divider: remove its own horizontal padding */
+  .section-divider { padding-left: 0 !important; padding-right: 0 !important; }
+
+  /* Nav: hide text links, keep logo + button */
+  .nav-links > a { display: none !important; }
+  .nav-links { gap: 0 !important; }
+}

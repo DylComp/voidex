@@ -29,6 +29,11 @@ export function getFeed() {
   }
 }
 
+export function clearHistory() {
+  localStorage.removeItem(HISTORY_KEY)
+  localStorage.removeItem(FEED_KEY)
+}
+
 export function getUserArchetype() {
   const history = getHistory()
   if (!history.length) return null

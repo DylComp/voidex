@@ -5,6 +5,7 @@ const links = [
   { label: 'Scan',       href: '#scan' },
   { label: 'Archetypes', href: '#archetypes' },
   { label: 'Feed',       href: '#feed' },
+  { label: 'History',    href: '#history' },
 ]
 
 export default function Nav() {
@@ -47,7 +48,7 @@ export default function Nav() {
       </div>
 
       {/* Links */}
-      <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
+      <div className="nav-links" style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
         {links.map(({ label, href }) => (
           <a
             key={label}
@@ -66,6 +67,7 @@ export default function Nav() {
           </a>
         ))}
         <button
+          onClick={() => document.getElementById('confess')?.scrollIntoView({ behavior: 'smooth' })}
           style={{
             fontFamily: 'JetBrains Mono, monospace',
             fontSize: '0.6rem', letterSpacing: '3px',
