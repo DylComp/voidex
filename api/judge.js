@@ -16,6 +16,7 @@ export default async function handler(req, res) {
 
   const { text } = req.body ?? {}
   if (!text?.trim()) return res.status(400).json({ error: 'No text provided' })
+  if (text.length > 2000) return res.status(400).json({ error: 'Text too long' })
 
   const upstream = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -33,11 +34,14 @@ export default async function handler(req, res) {
   })
 
   if (!upstream.ok) {
+    const errBody = await upstream.json().catch(() => ({}))
+    console.error('Anthropic error:', upstream.status, errBody)
     return res.status(502).json({ error: `Upstream error ${upstream.status}` })
   }
 
   const data = await upstream.json()
   const content = data.content?.[0]?.text
+  if (!content) return res.status(502).json({ error: 'Oracle returned unreadable output' })
   let judgment
   try {
     judgment = JSON.parse(content.trim())
@@ -45,14 +49,17 @@ export default async function handler(req, res) {
     return res.status(502).json({ error: 'Oracle returned unreadable output' })
   }
 
-  try {
-    await sql`
-      INSERT INTO feed (confession, archetype, delusion_score)
-      VALUES (${text.slice(0, 80)}, ${judgment.archetype}, ${judgment.delusion_score})
-    `
-  } catch (dbErr) {
-    console.error('Feed insert failed:', dbErr)
-    // Don't fail the request — judgment still returned to user
+  if (judgment.archetype && typeof judgment.delusion_score === 'number') {
+    try {
+      await sql`
+        INSERT INTO feed (confession, archetype, delusion_score)
+        VALUES (${text.slice(0, 80)}, ${judgment.archetype}, ${judgment.delusion_score})
+      `
+    } catch (dbErr) {
+      console.error('Feed insert failed:', dbErr)
+    }
+  } else {
+    console.warn('Judgment missing required fields, skipping feed insert', judgment)
   }
 
   return res.status(200).json(judgment)
