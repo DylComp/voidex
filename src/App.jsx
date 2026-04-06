@@ -27,9 +27,9 @@ function App() {
         <Nav />
         <Hero />
         <Confess />
+        <Feed />
         <Scanner />
         <Archetypes />
-        <Feed />
         <About />
         <Protocol />
         <Modules />
