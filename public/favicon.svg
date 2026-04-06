@@ -1,16 +1,62 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
   <defs>
     <filter id="glow">
-      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feGaussianBlur stdDeviation="0.8" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
-  <!-- Outer eye shape -->
-  <path d="M4 24 C12 10, 36 10, 44 24 C36 38, 12 38, 4 24 Z" fill="rgba(255,45,120,0.08)" stroke="#ff2d78" stroke-width="2" filter="url(#glow)"/>
+
+  <!-- Background -->
+  <rect width="48" height="48" fill="#0a0a0a"/>
+
+  <!-- Hand shape: palm + fingers, pink fill -->
+  <!-- Palm base -->
+  <path d="
+    M12 38
+    C10 36, 9 32, 9 28
+    L9 18
+    C9 16, 10.5 15, 12 16
+    L12 22
+
+    L12 14
+    C12 12, 13.5 11, 15 12
+    L15 21
+
+    L15 12
+    C15 10, 16.5 9, 18 10
+    L18 21
+
+    L18 12
+    C18 10, 19.5 9, 21 10
+    L21 21
+
+    L22 16
+    C22 14, 24 13.5, 25 15
+    L25 26
+
+    C27 24, 30 24.5, 30 27
+    C30 30, 26 32, 25 33
+
+    C25 36, 23 40, 20 42
+    C17 44, 13 41, 12 38
+    Z
+  " fill="#ff2d78" filter="url(#glow)"/>
+
+  <!-- Eye socket outline on palm -->
+  <ellipse cx="18" cy="27" rx="6" ry="4.5" fill="#0a0a0a" opacity="0.6"/>
+
+  <!-- Eye white -->
+  <ellipse cx="18" cy="27" rx="5" ry="3.5" fill="#ff2d78" stroke="#0a0a0a" stroke-width="0.5"/>
+
   <!-- Iris -->
-  <circle cx="24" cy="24" r="8" fill="rgba(255,45,120,0.12)" stroke="#ff2d78" stroke-width="1.5" filter="url(#glow)"/>
-  <!-- Pupil -->
-  <circle cx="24" cy="24" r="3.5" fill="#ff2d78" filter="url(#glow)"/>
-  <!-- Highlight -->
-  <circle cx="21" cy="21" r="1.2" fill="rgba(255,255,255,0.6)"/>
+  <circle cx="18" cy="27" r="2.2" fill="#0a0a0a"/>
+
+  <!-- Pupil star (8-pointed, simplified) -->
+  <circle cx="18" cy="27" r="1.1" fill="#ff2d78"/>
+
+  <!-- Star rays -->
+  <line x1="18" y1="25.2" x2="18" y2="28.8" stroke="#ff2d78" stroke-width="0.5"/>
+  <line x1="16.2" y1="27" x2="19.8" y2="27" stroke="#ff2d78" stroke-width="0.5"/>
+  <line x1="16.8" y1="25.8" x2="19.2" y2="28.2" stroke="#ff2d78" stroke-width="0.5"/>
+  <line x1="19.2" y1="25.8" x2="16.8" y2="28.2" stroke="#ff2d78" stroke-width="0.5"/>
 </svg>
