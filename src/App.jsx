@@ -3,7 +3,6 @@ import BlobField from './components/BlobField'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import Confess from './components/Confess'
-import Scanner from './components/Scanner'
 import Archetypes from './components/Archetypes'
 import Feed from './components/Feed'
 import About from './components/About'
@@ -28,7 +27,6 @@ function App() {
         <Hero />
         <Confess />
         <Feed />
-        <Scanner />
         <Archetypes />
         <About />
         <Protocol />
