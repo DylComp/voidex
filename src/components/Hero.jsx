@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Terminal from './Terminal'
 import Mascot from './Mascot'
 
@@ -6,6 +6,7 @@ const statusCycle = ['WATCHING', 'LISTENING', 'JUDGING', 'PROCESSING']
 
 export default function Hero() {
   const [tick, setTick] = useState(0)
+  const [pumped, setPumped] = useState(false)
 
   useEffect(() => {
     const id = setInterval(() => setTick(t => t + 1), 2200)
@@ -119,6 +120,9 @@ export default function Hero() {
             href="https://pump.fun/profile/Voidkyp6pRUKLcvZxoGcff7aW5Lz7CPdEQQKVdexWDM"
             target="_blank"
             rel="noopener noreferrer"
+            className={pumped ? 'pumpfun-spark' : ''}
+            onMouseEnter={() => setPumped(true)}
+            onMouseLeave={() => setPumped(false)}
             style={{
               fontFamily: 'JetBrains Mono, monospace',
               fontSize: '1rem', letterSpacing: '2px',
@@ -127,19 +131,6 @@ export default function Hero() {
               paddingBottom: 4,
               display: 'inline-block',
               textShadow: '0 0 12px rgba(255,45,120,0.6)',
-              transition: 'color 0.2s, text-shadow 0.2s, letter-spacing 0.2s',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.color = '#fff'
-              e.currentTarget.style.textShadow = '0 0 20px #ff2d78, 0 0 40px rgba(255,45,120,0.5)'
-              e.currentTarget.style.letterSpacing = '3px'
-              e.currentTarget.style.borderBottomColor = '#fff'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.color = '#ff2d78'
-              e.currentTarget.style.textShadow = '0 0 12px rgba(255,45,120,0.6)'
-              e.currentTarget.style.letterSpacing = '2px'
-              e.currentTarget.style.borderBottomColor = '#ff2d78'
             }}
           >
             pump.fun/profile/Voidk…WDM ↗

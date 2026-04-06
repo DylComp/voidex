@@ -157,6 +157,26 @@ body::after {
   background: var(--pink-ghost);
 }
 
+/* === PUMPFUN ELECTRIC SPARK === */
+@keyframes electricSpark {
+  0%   { text-shadow: 0 0 10px #ff2d78, 2px -1px 0 rgba(255,255,255,0.9); }
+  12%  { text-shadow: 0 0 30px #ff2d78, -3px 2px 0 rgba(255,255,255,1), 4px -3px 0 rgba(255,45,120,0.7); }
+  25%  { text-shadow: 0 0 10px #ff2d78, 1px 3px 0 rgba(255,255,255,0.3); }
+  38%  { text-shadow: 0 0 40px #ff2d78, -4px -2px 0 rgba(255,255,255,1), 3px 3px 0 rgba(255,100,150,0.8); }
+  50%  { text-shadow: 0 0 12px #ff2d78, 3px -2px 0 rgba(255,255,255,0.5); }
+  63%  { text-shadow: 0 0 35px #ff2d78, -2px 4px 0 rgba(255,255,255,0.9), 5px -1px 0 rgba(255,45,120,0.5); }
+  75%  { text-shadow: 0 0 10px #ff2d78, -1px -3px 0 rgba(255,255,255,0.4); }
+  88%  { text-shadow: 0 0 45px #ff2d78, 4px 2px 0 rgba(255,255,255,1), -3px -3px 0 rgba(255,45,120,0.6); }
+  100% { text-shadow: 0 0 10px #ff2d78, 2px -1px 0 rgba(255,255,255,0.7); }
+}
+
+.pumpfun-spark {
+  animation: electricSpark 0.2s infinite;
+  color: #fff !important;
+  border-bottom-color: #fff !important;
+  transition: none !important;
+}
+
 /* === DELUSION BAR === */
 @keyframes barFill {
   from { width: 0%; }
