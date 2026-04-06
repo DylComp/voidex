@@ -3,7 +3,7 @@
 const lines = [
   {
     label: '// what it is',
-    text: 'You type something. Claude reads it, scores how deluded it is on a scale of 0 to 100, and assigns you one of ten archetypes based on the pattern it detects. That result goes into a public feed anyone can see. Simple pipeline, uncomfortable output.',
+    text: 'You type something. VOIDEX reads it, scores how deluded it is on a scale of 0 to 100, and assigns you one of ten archetypes based on the pattern it detects. That result goes into a public feed anyone can see. Simple pipeline, uncomfortable output.',
   },
   {
     label: '// why it works',
